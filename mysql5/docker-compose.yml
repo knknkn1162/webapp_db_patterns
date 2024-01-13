@@ -1,0 +1,42 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  db:
+    hostname: ${DB_HOST}
+    platform: linux/x86_64
+    image: mysql:5.7.44
+    restart: always
+    environment:
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_TCP_PORT: ${DB_PORT}
+    ports:
+    - ${DB_PORT}
+  app:
+    build: .
+    volumes:
+      - .:/app/
+    environment:
+      DB_PORT: ${DB_PORT}
+    ports:
+    - "8000:${APP_PORT}"
+  test:
+    image: debian:bookworm
+    environment:
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./scripts:/script
+    command: >
+      /bin/bash -c '
+        apt update &&
+        apt install -y default-mysql-client &&
+        /bin/bash
+      '
