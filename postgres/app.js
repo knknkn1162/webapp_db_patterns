@@ -1,24 +1,26 @@
 'use strict'
-/*
 const express = require('express');
-const {Client} = require('pg');
-const c = new Client()
-const app = express();
+const env = require('./env');
+const pgp = require('pg-promise')();
 
-app.get('/get', (req, res) => {
+const conn = pgp({
+  host: env.DB_HOST,
+  port: env.DB_PORT,
+  database: env.DB_NAME,
+  user: env.DB_USER,
+  password: env.DB_PASSWORD,
 });
-*/
-
-const express = require('express');
-
-// Constants
-const PORT = 8080;
 
 // App
 var app = express();
-app.get('/', function (req, res) {
-  res.send('Hello world\n');
+app.get('/get', async (req, res) => {
+  try {
+    const data = await conn.any(`select * from person`);
+    res.send(JSON.stringify(data));
+  } catch(err) {
+    new Error("xxx");
+  }
 });
 
-app.listen(PORT);
-console.log('Running on http://localhost:' + PORT);
+app.listen(env.APP_PORT);
+console.log('Running on http://localhost:' + env.APP_PORT);

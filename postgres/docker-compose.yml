@@ -15,10 +15,12 @@ services:
     command: -p ${DB_PORT}
   app:
     build: .
+    volumes:
+      - .:/app/
     environment:
       DB_PORT: ${DB_PORT}
     ports:
-    - "8080:8080"
+    - "8000:${APP_PORT}"
   peek:
     image: debian:bookworm
     environment:
@@ -28,3 +30,11 @@ services:
       DB_USER: ${DB_USER}
     tty: true
     stdin_open: true
+    volumes:
+      - ./scripts:/script
+    command: >
+      /bin/bash -c '
+        apt update &&
+        apt install -y postgresql-client-15 &&
+        /bin/bash
+      '
