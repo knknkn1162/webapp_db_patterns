@@ -21,7 +21,7 @@ services:
       DB_PORT: ${DB_PORT}
     ports:
     - "8000:${APP_PORT}"
-  peek:
+  test:
     image: debian:bookworm
     environment:
       DB_PORT: ${DB_PORT}
