@@ -6,6 +6,7 @@
 + Fronend: -
 + DB: MySQL8.2.0
   + mysql2
+  + default-port: 3306
 + test
   + default-mysql-client
 

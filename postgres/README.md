@@ -6,6 +6,7 @@
 + Fronend: -
 + DB: PostgreSQL15.5
   + pg-promise
+  + default-port: 5432
 + test
   + postgresql-client-15
 
