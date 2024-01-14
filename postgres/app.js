@@ -9,6 +9,9 @@ const conn = pgp({
   database: env.DB_NAME,
   user: env.DB_USER,
   password: env.DB_PASSWORD,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 // App
